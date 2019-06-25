@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CardWithImage">
+        <attr name="cv_title" format="reference" />
+        <attr name="cv_subtitle" format="reference" />
+        <attr name="cv_image" format="reference" />
+    </declare-styleable>
+</resources>

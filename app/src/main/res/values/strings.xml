@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MyCV</string>
+    <string name="load_error">No fue posible obtener los datos</string>
+    <string name="loading">Cargando información del perfil</string>
+    <string name="title_summary">Summary</string>
+
+    <!--Headers-->
+    <string name="header_education">Education</string>
+    <string name="header_experience">Experience</string>
+</resources>
