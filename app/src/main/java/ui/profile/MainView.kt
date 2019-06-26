@@ -1,8 +1,9 @@
-package com.lagos.mycv.view
+package ui.profile
 
+import com.lagos.mycv.base.BaseView
 import com.lagos.mycv.models.ProfileModel
 
-interface MainView {
+interface MainView : BaseView {
     fun showProgress()
 
     fun hideProgress()

@@ -1,29 +1,26 @@
-package com.lagos.mycv.activities
+package ui.profile
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
 import com.lagos.mycv.R
+import com.lagos.mycv.base.BaseActivity
 import com.lagos.mycv.custom.CardWithImage
-import com.lagos.mycv.interactors.MainInteractor
 import com.lagos.mycv.models.ProfileModel
-import com.lagos.mycv.presenter.MainPresenter
-import com.lagos.mycv.view.MainView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : BaseActivity<MainPresenter>(), MainView {
     private lateinit var mMainPresenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mMainPresenter = MainPresenter(this, MainInteractor())
+        mMainPresenter = MainPresenter(this)
 
         fb_email.setOnClickListener {
             sendEmail()
@@ -38,6 +35,10 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onPause() {
         mMainPresenter.onPause()
         super.onPause()
+    }
+
+    override fun instantiatePresenter(): MainPresenter {
+        return MainPresenter(this)
     }
 
     override fun showProgress() {
@@ -93,13 +94,13 @@ class MainActivity : AppCompatActivity(), MainView {
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("mailto:")
         intent.putExtra(Intent.EXTRA_EMAIL, "francisco.lagos@globant.com")
-        intent.putExtra(Intent.EXTRA_SUBJECT,"Feedback")
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback")
         if (intent.resolveActivity(this.packageManager) != null) {
             startActivity(intent)
         }
     }
 
-    private fun addHeader(title : String) {
+    private fun addHeader(title: String) {
         val header = TextView(this)
         header.text = title
         header.textSize = 20F
