@@ -7,20 +7,25 @@ import android.text.TextUtils
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
+import com.lagos.domain.models.Profile
+import com.lagos.domain.usecases.GetProfileUseCase
 import com.lagos.mycv.R
 import com.lagos.mycv.base.BaseActivity
 import com.lagos.mycv.custom.CardWithImage
-import com.lagos.mycv.models.ProfileModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : BaseActivity<MainPresenter>(), MainView {
+
+    @Inject
+    lateinit var profileUseCase: GetProfileUseCase
+
     private lateinit var mMainPresenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mMainPresenter = MainPresenter(this)
 
         fb_email.setOnClickListener {
             sendEmail()
@@ -38,7 +43,7 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
     }
 
     override fun instantiatePresenter(): MainPresenter {
-        return MainPresenter(this)
+        return MainPresenter(this, profileUseCase)
     }
 
     override fun showProgress() {
@@ -49,7 +54,7 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
         layout_loading.visibility = GONE
     }
 
-    override fun setData(profile: ProfileModel) {
+    override fun setData(profile: Profile) {
         collapsingToolbar.title = profile.name
         Picasso.get()
             .load(profile.image)

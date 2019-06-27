@@ -1,4 +1,4 @@
-package com.lagos.mycv.models
+package com.lagos.data.models
 
 import com.google.gson.annotations.SerializedName
 

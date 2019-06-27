@@ -1,34 +1,35 @@
 package ui.profile
 
+import com.lagos.domain.models.Profile
+import com.lagos.domain.usecases.GetProfileUseCase
 import com.lagos.mycv.base.BasePresenter
-import com.lagos.mycv.models.ProfileModel
-import com.lagos.mycv.network.ApiGistInterface
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
 
-//class MainPresenter(private var mainView: MainView?, private val mainInteractor: MainInteractor) : MainInteractor.OnFinishedListener {
-class MainPresenter(mainView: MainView) : BasePresenter<MainView>(mainView) {
+class MainPresenter(
+    private val mainView: MainView,
+    private val getProfileUseCase: GetProfileUseCase
+) : BasePresenter<MainView>(mainView) {
 
-    @Inject
-    lateinit var mApiService: ApiGistInterface
+    private val compositeDisposable = CompositeDisposable()
 
     var disposable: Disposable? = null
 
     fun getData() {
         view.showProgress()
-        disposable = mApiService.getProfileData()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { result: ProfileModel -> onResultSuccess(result) },
-                { error -> onResultFail() }
-            )
-
+        compositeDisposable.add(getProfileUseCase.execute()
+            .subscribe({ profileData ->
+                if (profileData == null) {
+                    onResultFail()
+                } else {
+                    onResultSuccess(profileData)
+                }
+            }, {
+                onResultFail()
+            }))
     }
 
-    private fun onResultSuccess(profile: ProfileModel) {
+    private fun onResultSuccess(profile: Profile) {
         view.hideProgress()
         view.setData(profile)
     }

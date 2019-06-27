@@ -1,6 +1,6 @@
 package com.lagos.mycv.injection.module
 
-import com.lagos.mycv.network.ApiGistInterface
+import com.lagos.data.network.ApiGistInterface
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -23,7 +23,7 @@ object NetworkModule {
     @Reusable
     @JvmStatic
     internal fun providePostApi(retrofit: Retrofit): ApiGistInterface {
-        return retrofit.create(ApiGistInterface::class.java)
+        return retrofit.create(com.lagos.data.network.ApiGistInterface::class.java)
     }
 
     /**

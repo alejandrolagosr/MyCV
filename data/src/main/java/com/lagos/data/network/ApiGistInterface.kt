@@ -1,6 +1,6 @@
-package com.lagos.mycv.network
+package com.lagos.data.network
 
-import com.lagos.mycv.models.ProfileModel
+import com.lagos.data.models.ProfileModel
 import io.reactivex.Observable
 import retrofit2.http.GET
 
