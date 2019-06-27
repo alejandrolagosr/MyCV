@@ -9,21 +9,3 @@ data class Profile (
     val id : String,
     val image : String
 )
-
-data class Education (
-    val name : String,
-    val type : String,
-    val image : String
-)
-
-data class Experience (
-    val name : String,
-    val date_from : String,
-    val date_to : String,
-    val image : String,
-    val description : String
-)
-
-data class Skills (
-    val name : String
-)
