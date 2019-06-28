@@ -47,11 +47,27 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:2.23.1"
     compileOnly "org.glassfish:javax.annotation:3.1.1"
 
-    testImplementation 'junit:junit:4.12'
+    // Core library
+    androidTestImplementation 'androidx.test:core:1.2.0'
+
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+
+    // Assertions
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.ext:truth:1.2.0'
+    androidTestImplementation 'com.google.truth:truth:0.42'
+
+    // Espresso dependencies
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
+
+    /*testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
+    implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'*/
 
     implementation project(':data')
     implementation project(':domain')
