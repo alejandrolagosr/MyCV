@@ -1,15 +1,15 @@
 package com.lagos.data.mappers
 
-import com.lagos.data.models.ProfileModel
 import com.lagos.data.models.ProfileModelRealm
 import com.lagos.domain.mappers.Transform
+import com.lagos.domain.models.Profile
 
-class ProfileMapper : Transform<ProfileModelRealm, ProfileModel>() {
+class ProfileMapper : Transform<ProfileModelRealm, Profile>() {
 
-    override fun transform(value: ProfileModelRealm): ProfileModel {
-        val name: String = value.name ?: ""
+    override fun transform(value: ProfileModelRealm): Profile {
         val summary: String = value.summary ?: ""
+        val name: String = value.name ?: ""
         val image: String = value.image ?: ""
-        return ProfileModel(name, summary, image)
+        return Profile(summary, name, image)
     }
 }

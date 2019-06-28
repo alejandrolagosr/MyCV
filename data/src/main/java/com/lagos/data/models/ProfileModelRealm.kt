@@ -7,13 +7,13 @@ import java.util.*
 open class ProfileModelRealm() : RealmObject() {
     @PrimaryKey
     var id: String = UUID.randomUUID().toString()
+    var summary: String? = null
     var name: String? = null
     var image: String? = null
-    var summary: String? = null
 
-    constructor(name: String, image: String, summary: String) : this() {
+    constructor(summary: String, name: String, image: String) : this() {
+        this.summary = summary
         this.name = name
         this.image = image
-        this.summary = summary
     }
 }

@@ -10,7 +10,7 @@ import com.lagos.domain.models.Education
 import com.lagos.domain.models.Experience
 import com.lagos.domain.models.Profile
 
-class CurriculumMapper() : Transform<CurriculumModel, Curriculum>() {
+class CurriculumMapper : Transform<CurriculumModel, Curriculum>() {
 
     override fun transform(value: CurriculumModel): Curriculum {
         val profile: Profile = transformProfileFromModel(value.profileModel)
@@ -23,7 +23,7 @@ class CurriculumMapper() : Transform<CurriculumModel, Curriculum>() {
         val name: String = value?.name ?: ""
         val summary: String = value?.summary ?: ""
         val image: String = value?.image ?: ""
-        return Profile(name, summary, image)
+        return Profile(summary, name, image)
     }
 
     private fun transformSchoolFromModel(value: List<EducationModel>): List<Education> {

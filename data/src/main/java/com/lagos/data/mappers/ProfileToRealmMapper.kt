@@ -9,6 +9,6 @@ class ProfileToRealmMapper : Transform<ProfileModel?, ProfileModelRealm>() {
         val name: String = value?.name ?: ""
         val summary: String = value?.summary ?: ""
         val image: String = value?.image ?: ""
-        return ProfileModelRealm(name, summary, image)
+        return ProfileModelRealm(summary, name, image)
     }
 }
