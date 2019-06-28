@@ -1,49 +1,61 @@
-package ui.profile
+package com.lagos.mycv.main.view
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
+import com.lagos.domain.models.Education
+import com.lagos.domain.models.Experience
 import com.lagos.domain.models.Profile
+import com.lagos.domain.usecases.GetCurriculumUseCase
+import com.lagos.domain.usecases.GetEducationUseCase
+import com.lagos.domain.usecases.GetExperienceUseCase
 import com.lagos.domain.usecases.GetProfileUseCase
+import com.lagos.mycv.MyCVApplication
 import com.lagos.mycv.R
-import com.lagos.mycv.base.BaseActivity
 import com.lagos.mycv.custom.CardWithImage
+import com.lagos.mycv.main.presenter.MainContract
+import com.lagos.mycv.main.presenter.MainPresenter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<MainPresenter>(), MainView {
+class MainActivity : AppCompatActivity(), MainContract.View {
 
     @Inject
-    lateinit var profileUseCase: GetProfileUseCase
+    lateinit var mProfileUseCase: GetProfileUseCase
 
-    private lateinit var mMainPresenter: MainPresenter
+    @Inject
+    lateinit var mCurriculumUseCase: GetCurriculumUseCase
+
+    @Inject
+    lateinit var mExperienceUseCase: GetExperienceUseCase
+
+    @Inject
+    lateinit var mEducationUseCase: GetEducationUseCase
+
+
+    private val mMainPresenter by lazy {
+        MainPresenter(this, mProfileUseCase, mCurriculumUseCase, mEducationUseCase, mExperienceUseCase)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        (application as MyCVApplication).mAppComponent.inject(this)
+        mMainPresenter.getCurriculum()
         fb_email.setOnClickListener {
             sendEmail()
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        mMainPresenter.getData()
-    }
-
     override fun onPause() {
-        mMainPresenter.onPause()
+        mMainPresenter.dispose()
         super.onPause()
-    }
-
-    override fun instantiatePresenter(): MainPresenter {
-        return MainPresenter(this, profileUseCase)
     }
 
     override fun showProgress() {
@@ -66,26 +78,30 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
             cv_summary.visibility = VISIBLE
             tv_content.text = profile.summary
         }
+    }
 
-        if (profile.experience.isNotEmpty()) {
+    override fun setEducationData(education: List<Education>) {
+        if (education.isNotEmpty()) {
+            addHeader(getString(R.string.header_education))
+            education.forEach {
+                val card = CardWithImage(this)
+                card.setTitle(it.name)
+                card.setSubtitle(it.type)
+                card.setImage(it.image)
+                layout_content.addView(card)
+            }
+        }
+    }
+
+    override fun setExperienceData(experience: List<Experience>) {
+        if (experience.isNotEmpty()) {
             addHeader(getString(R.string.header_experience))
-            profile.experience.forEach {
+            experience.forEach {
                 val card = CardWithImage(this)
                 card.setTitle(it.name)
                 card.setSubtitle(it.date_from + " to " + it.date_to)
                 card.setImage(it.image)
                 card.setDescription(it.description)
-                layout_content.addView(card)
-            }
-        }
-
-        if (profile.education.isNotEmpty()) {
-            addHeader(getString(R.string.header_education))
-            profile.education.forEach {
-                val card = CardWithImage(this)
-                card.setTitle(it.name)
-                card.setSubtitle(it.type)
-                card.setImage(it.image)
                 layout_content.addView(card)
             }
         }
